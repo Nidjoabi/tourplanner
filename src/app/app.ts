@@ -1,6 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import './task5';
+import './task3';
 
 @Component({
   selector: 'app-root',

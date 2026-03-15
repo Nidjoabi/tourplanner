@@ -1,0 +1,11 @@
+<ul class="tour-list">
+  <li *ngFor="let tour of tours">
+    <button class="tour-button-row" type="button" (click)="selectTour(tour)" [class.active]="selectedTour?.id === tour.id">
+      {{ tour.name }}
+    </button>
+  </li>
+</ul>
+<div class="selected" *ngIf="selectedTour">
+  <h2>{{ selectedTour.name }}</h2>
+  <p>{{ selectedTour.details }}</p>
+</div>

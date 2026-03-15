@@ -1,0 +1,40 @@
+.tour-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.tour-list li {
+  display: flex;
+  justify-content: center;
+}
+
+.tour-button-row {
+  width: 180px;
+  min-height: 100px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+
+.tour-button-row.active {
+  background: #ccc;
+}
+
+.selected {
+  background: #f3f3f3;
+  border-radius: 10px;
+  margin: 10px
+}
+
+.tour-button-row:hover {
+  background: #ccc;
+}

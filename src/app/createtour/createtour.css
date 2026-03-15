@@ -1,0 +1,104 @@
+.form-container {
+  width: 100%;
+  max-width: 420px;
+}
+
+.field-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.route-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.route-row .field-row {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+h4 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.input-field,
+.textarea-field {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+.textarea-field {
+  min-height: 140px;
+  resize: none;
+}
+
+p {
+  margin: 0;
+}
+
+.create-button {
+  padding: 12px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.create-button:hover {
+  background-color: #0056b3;
+}
+
+.clear-button {
+  padding: 12px 20px;
+  font-size: 16px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.clear-button:hover {
+  background-color: #5a6268;
+}
+
+.transport-buttons {
+  display: flex;
+  gap: 0;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+  width: fit-content;
+}
+
+.transport-btn {
+  background: white;
+  border: none;
+  border-right: 1px solid #ccc;
+  padding: 10px 14px;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.transport-btn:last-child {
+  border-right: none;
+}
+
+.transport-btn:hover {
+  background: #f3f3f3;
+}
+
+.transport-btn.active {
+  background: #e5e5e5;
+}

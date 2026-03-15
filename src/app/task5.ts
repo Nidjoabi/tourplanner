@@ -20,6 +20,7 @@ type Train = {
   line: string;
 };
 
+
 type Transport = Car | Bike | Train;
 
 function transportLabel(t: Transport): string {

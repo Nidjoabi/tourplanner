@@ -1,11 +1,13 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import './task5';
-import './task3';
+
+import { Tourlist } from './tourlist/tourlist';
+import { Createtour } from './createtour/createtour';
+import { Map } from './map/map';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, Tourlist, Createtour, Map],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

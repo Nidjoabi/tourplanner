@@ -1,0 +1,16 @@
+<ul class="tour-list">
+  <li *ngFor="let tour of vm.tours()">
+    <button
+      class="tour-button-row"
+      type="button"
+      (click)="vm.selectTour(tour.id)"
+      [class.active]="vm.selectedTourId() === tour.id">
+      {{ tour.name }}
+    </button>
+  </li>
+</ul>
+
+<div class="selected" *ngIf="vm.selectedTour() as selectedTour">
+  <h2>{{ selectedTour.name }}</h2>
+  <p>{{ selectedTour.details }}</p>
+</div>

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
+import { MapFacadeService } from '../../services/map.service';
 
 @Component({
   selector: 'app-map',
@@ -6,6 +7,14 @@ import { Component } from '@angular/core';
   templateUrl: './map.html',
   styleUrl: './map.css',
 })
-export class Map {
 
+export class MapComponent implements AfterViewInit {
+
+  constructor(private mapService: MapFacadeService) {}
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+    this.mapService.initMap('map');
+  }, 0);
+}
 }

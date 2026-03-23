@@ -37,7 +37,7 @@ export class SelectableTour {
 
   selectedTourId = signal<number | null>(null);
 
-  selectedTour = computed(() =>
+  selectedTour = computed<Tour | null>(() =>
     this.tours().find(tour => tour.id === this.selectedTourId()) ?? null
   );
 

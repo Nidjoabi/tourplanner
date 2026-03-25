@@ -1,1 +1,13 @@
-<div id="map" style="width: 100%; height: 100%;"></div>
+<!-- Task 5 -->
+<div style="display: flex; gap: 8px; margin-bottom: 6px;">
+  <button (click)="centerVienna()"
+    style="background: #2563eb; color: white; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px;">
+    Vienna
+  </button>
+  <button (click)="centerBerlin()"
+    style="background: #2563eb; color: white; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px;">
+    Berlin
+  </button>
+</div>
+
+<div id="map" style="width: 100%; height: 300px; border: 1px solid #d1d5db; border-radius: 6px;"></div>

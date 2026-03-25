@@ -3,6 +3,7 @@ import { LoginComponent } from '../components/auth/login/login';
 import { RegisterComponent } from '../components/auth/register/register';
 import { CreateTourPage } from './create-tour-page/create-tour-page';
 import { HomePage } from './home-page/home-page';
+import { Tourlogs } from './tourlogs/tourlogs';
 
 export const routes: Routes = [
 //  {path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -11,6 +12,7 @@ export const routes: Routes = [
     {path: 'login', component: LoginComponent },
     {path: 'register', component: RegisterComponent },
     {path: 'create-tour', component: CreateTourPage },
+    {path: 'tourlogs', component: Tourlogs }
 
 
 ];

@@ -1,0 +1,121 @@
+<form class="form-container" [formGroup]="tourForm" (ngSubmit)="submit()">
+  <div class="field-row">
+    <h4>Trip Name</h4>
+    <input
+      type="text"
+      placeholder="Enter trip name"
+      class="input-field"
+      formControlName="tripName"
+    >
+    @if (tourForm.controls.tripName.touched && tourForm.controls.tripName.invalid) {
+      <small class="error-text">Trip name is required.</small>
+    }
+  </div>
+
+  <div class="route-row">
+    <div class="field-row">
+      <h4>From</h4>
+      <input
+        id="from"
+        type="text"
+        class="input-field"
+        formControlName="from"
+      >
+      @if (tourForm.controls.from.touched && tourForm.controls.from.invalid) {
+        <small class="error-text">Starting point is required.</small>
+      }
+    </div>
+
+    <div class="field-row">
+      <h4>To</h4>
+      <input
+        id="to"
+        type="text"
+        class="input-field"
+        formControlName="to"
+      >
+      @if (tourForm.controls.to.touched && tourForm.controls.to.invalid) {
+        <small class="error-text">Destination is required.</small>
+      }
+    </div>
+  </div>
+
+  <div class="field-row">
+    <h4>Transportation</h4>
+    <div class="transport-buttons">
+      @for (option of TransportOptions; track option.type) {
+        <button
+          type="button"
+          class="transport-btn"
+          [class.active]="selectedTransportationType === option.type"
+          (click)="selectTransportation(option.type)"
+        >
+          {{ option.icon }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="route-row">
+    <div class="field-row">
+      <h4>Duration</h4>
+      <input
+        id="duration"
+        type="number"
+        class="input-field"
+        formControlName="duration"
+      >
+      @if (tourForm.controls.duration.touched && tourForm.controls.duration.invalid) {
+        <small class="error-text">Duration is required.</small>
+      }
+    </div>
+
+    <div class="field-row">
+      <h4>Distance</h4>
+      <input
+        id="distance"
+        type="number"
+        class="input-field"
+        formControlName="distance"
+      >
+      @if (tourForm.controls.distance.touched && tourForm.controls.distance.invalid) {
+        <small class="error-text">Distance is required.</small>
+      }
+    </div>
+  </div>
+
+  <div class="field-row">
+    <h4>Description</h4>
+    <textarea
+      placeholder="Enter trip description"
+      class="textarea-field"
+      formControlName="description"
+    ></textarea>
+    @if (tourForm.controls.description.touched && tourForm.controls.description.invalid) {
+      <small class="error-text">
+        Description is required and may not exceed 500 characters.
+      </small>
+    }
+  </div>
+
+  @if (successMessage) {
+    <p class="success-text">{{ successMessage }}</p>
+  }
+
+  @if (errorMessage) {
+    <p class="error-text">{{ errorMessage }}</p>
+  }
+
+  <div class="route-row">
+    <div class="field-row">
+      <button class="create-button" type="submit" [disabled]="isSaving">
+        {{ isSaving ? 'Creating...' : 'Create Tour' }}
+      </button>
+    </div>
+    <div class="field-row">
+      <button class="clear-button" type="button" (click)="clearForm()">
+        Clear Form
+      </button>
+    </div>
+  </div>
+</form>

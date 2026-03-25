@@ -6,6 +6,7 @@ type Tour = {
   readonly details: string;
 };
 
+// Task 2
 export class SelectableTour {
   tours = signal<Tour[]>([
     {
@@ -40,6 +41,23 @@ export class SelectableTour {
   selectedTour = computed<Tour | null>(() =>
     this.tours().find(tour => tour.id === this.selectedTourId()) ?? null
   );
+
+  // Task 4
+  tourCount = computed(() => this.tours().length);
+
+  hasSelection = computed(() => this.selectedTourId() !== null);
+
+  selectedIndex = computed(() => {
+    const id = this.selectedTourId();
+    if (id === null) return -1;
+    return this.tours().findIndex(t => t.id === id);
+  });
+
+  positionLabel = computed(() => {
+    const index = this.selectedIndex();
+    if (index === -1) return 'No tour selected';
+    return `Tour ${index + 1} of ${this.tourCount()}`;
+  });
 
   selectTour(id: number): void {
     this.selectedTourId.set(id);

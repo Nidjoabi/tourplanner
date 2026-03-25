@@ -1,3 +1,4 @@
+<!-- Task 1 -->
 <form class="form-container" [formGroup]="tourForm" (ngSubmit)="submit()">
   <div class="field-row">
     <h4>Trip Name</h4>
@@ -15,11 +16,13 @@
   <div class="route-row">
     <div class="field-row">
       <h4>From</h4>
+      <!-- Task 3 -->
       <input
         id="from"
         type="text"
         class="input-field"
         formControlName="from"
+        (input)="updateSummary()"
       >
       @if (tourForm.controls.from.touched && tourForm.controls.from.invalid) {
         <small class="error-text">Starting point is required.</small>
@@ -28,11 +31,13 @@
 
     <div class="field-row">
       <h4>To</h4>
+      <!-- Task 3 -->
       <input
         id="to"
         type="text"
         class="input-field"
         formControlName="to"
+        (input)="updateSummary()"
       >
       @if (tourForm.controls.to.touched && tourForm.controls.to.invalid) {
         <small class="error-text">Destination is required.</small>
@@ -42,6 +47,7 @@
 
   <div class="field-row">
     <h4>Transportation</h4>
+    <!-- Task 3 -->
     <div class="transport-buttons">
       @for (option of TransportOptions; track option.type) {
         <button
@@ -55,6 +61,13 @@
       }
     </div>
   </div>
+
+  <!-- Task 3 -->
+  @if (summary()) {
+    <div style="background: #f0f7ff; border: 1px solid #cccccc; border-radius: 6px; padding: 10px; font-size: 13px; margin-top: 8px;">
+      🗺️ <strong>Route:</strong> {{ summary() }}
+    </div>
+  }
 
   <div class="route-row">
     <div class="field-row">

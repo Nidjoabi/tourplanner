@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TourService } from './tour.service';
 import { TransporationType, Tour } from './tour.model';
@@ -25,6 +25,7 @@ export class CreateTourComponent {
   errorMessage: string = "";
   successMessage: string = "";
 
+  // Task 1
   tourForm = new FormGroup({
     tripName: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     from: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
@@ -41,9 +42,25 @@ export class CreateTourComponent {
     })
   });
 
+  // Task 3 — Mediator
+  readonly summary = signal('');
+
+  updateSummary(): void {
+    const { from, to, transportation } = this.tourForm.getRawValue();
+    if (from && to) {
+      this.summary.set(`${transportation} from ${from} to ${to}`);
+    } else {
+      this.summary.set('');
+    }
+  }
+
+  // Task 1
   selectTransportation(type: TransporationType): void{
     this.tourForm.patchValue({ transportation: type });
+    // Task 3
+    this.updateSummary();
   }
+
 
   get selectedTransportationType(): TransporationType {
     return this.tourForm.controls.transportation.value;
@@ -61,7 +78,7 @@ export class CreateTourComponent {
     });
   }
 
-
+  // Task 1
   submit(): void {
     this.successMessage = "";
     this.errorMessage = "";

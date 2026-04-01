@@ -1,2 +1,82 @@
-<h1>Your Planned Tours</h1>
+<div class="page-wrapper">
+  <div class="page-container">
+    <h1 class="page-title">Tour Logs</h1>
 
+    <div class="tour-grid">
+      @for (tourLog of vm.tourLogs(); track tourLog.id) {
+        <div
+          class="tour-card"
+          [class.selected]="vm.SelectedTourLogId() === tourLog.id"
+        >
+          <div class="tour-header">
+            <div>
+              <h2 class="tour-title">{{ tourLog.tripName }}</h2>
+              <p class="tour-route">{{ tourLog.from }} → {{ tourLog.to }}</p>
+            </div>
+
+            <span class="tour-badge">
+              {{ tourLog.transportation }}
+            </span>
+          </div>
+
+          <div class="tour-details">
+            <p><strong>From:</strong> {{ tourLog.from }}</p>
+            <p><strong>To:</strong> {{ tourLog.to }}</p>
+            <p><strong>Transportation:</strong> {{ tourLog.transportation }}</p>
+            <p><strong>Distance:</strong> {{ tourLog.distance }} miles</p>
+            <p><strong>Duration:</strong> {{ tourLog.duration }} hours</p>
+            <p><strong>Description:</strong> {{ tourLog.description }}</p>
+          </div>
+
+          <div class="tour-actions">
+            <button
+              class="delete-button"
+              (click)="vm.DeleteTourLog(tourLog.id!)"
+            >
+              Delete
+            </button>
+
+            <button
+              class="edit-button"
+              (click)="vm.selectTourLog(tourLog.id!)"
+            >
+              Edit
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+
+    @if (vm.SelectedTourLog(); as selectedTour) {
+      <div class="edit-panel">
+        <h2>Edit Tour</h2>
+
+        <label for="tripName">Trip Name</label>
+        <input id="tripName" type="text" [value]="selectedTour.tripName" />
+
+        <label for="from">From</label>
+        <input id="from" type="text" [value]="selectedTour.from" />
+
+        <label for="to">To</label>
+        <input id="to" type="text" [value]="selectedTour.to" />
+
+        <label for="transportation">Transportation</label>
+        <input id="transportation" type="text" [value]="selectedTour.transportation" />
+
+        <label for="distance">Distance</label>
+        <input id="distance" type="number" [value]="selectedTour.distance" />
+
+        <label for="duration">Duration</label>
+        <input id="duration" type="number" [value]="selectedTour.duration" />
+
+        <label for="description">Description</label>
+        <textarea id="description">{{ selectedTour.description }}</textarea>
+
+        <div class="edit-actions">
+          <button class="save-button">Save</button>
+          <button class="cancel-button " (click)="vm.cancelEdit()">Cancel</button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

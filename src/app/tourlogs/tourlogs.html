@@ -47,36 +47,42 @@
       }
     </div>
 
-    @if (vm.SelectedTourLog(); as selectedTour) {
-      <div class="edit-panel">
+    @if (vm.SelectedTourLog()) {
+      <form class="edit-panel" [formGroup]="vm.tourForm" (ngSubmit)="vm.EditTourLog()">
         <h2>Edit Tour</h2>
 
         <label for="tripName">Trip Name</label>
-        <input id="tripName" type="text" [value]="selectedTour.tripName" />
+        <input id="tripName" type="text" formControlName="tripName" />
 
         <label for="from">From</label>
-        <input id="from" type="text" [value]="selectedTour.from" />
+        <input id="from" type="text" formControlName="from" />
 
         <label for="to">To</label>
-        <input id="to" type="text" [value]="selectedTour.to" />
+        <input id="to" type="text" formControlName="to" />
 
         <label for="transportation">Transportation</label>
-        <input id="transportation" type="text" [value]="selectedTour.transportation" />
+        <input id="transportation" type="text" formControlName="transportation" />
 
         <label for="distance">Distance</label>
-        <input id="distance" type="number" [value]="selectedTour.distance" />
+        <input id="distance" type="number" formControlName="distance" />
 
         <label for="duration">Duration</label>
-        <input id="duration" type="number" [value]="selectedTour.duration" />
+        <input id="duration" type="number" formControlName="duration" />
 
         <label for="description">Description</label>
-        <textarea id="description">{{ selectedTour.description }}</textarea>
+        <textarea id="description" formControlName="description"></textarea>
 
         <div class="edit-actions">
-          <button class="save-button">Save</button>
-          <button class="cancel-button " (click)="vm.cancelEdit()">Cancel</button>
+          <button class="save-button" type="submit">Save</button>
+          <button
+            class="cancel-button"
+            type="button"
+            (click)="vm.cancelEdit()"
+          >
+            Cancel
+          </button>
         </div>
-      </div>
+      </form>
     }
   </div>
 </div>

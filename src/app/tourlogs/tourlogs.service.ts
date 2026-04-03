@@ -6,15 +6,7 @@ import { Tour } from './tourlogs.model';
   providedIn: 'root'
 })
 export class TourlogsService {
-  private tours: Tour[] = [];
-
   editTourLog(tour: Tour): Observable<Tour> {
-    const index = this.tours.findIndex(t => t.id === tour.id);
-    if (index !== -1) {
-        this.tours[index] = tour;
-        return of(tour);
-    } else {
-        return of(null as any);
-    }
-    }
+    return of(tour);
+  }
 }

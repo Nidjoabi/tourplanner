@@ -1,6 +1,9 @@
-<nav class="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+<nav class="bg-white border-b border-gray-200 px-6 py-4">
+  <div class="flex items-center justify-between">
   <span class="text-lg font-semibold text-gray-900">TourPlanner</span>
-  <div class="flex gap-6 text-sm text-gray-600">
+  
+  <!-- Desktop -->
+  <div class="hidden md:flex gap-6 text-sm text-gray-600">
     <a routerLink="/home" routerLinkActive="text-blue-600" class="hover:text-gray-900">Home</a>
     <a routerLink="/tourlogs" routerLinkActive="text-blue-600" class="hover:text-gray-900">Plans</a>
     <a routerLink="/login" routerLinkActive="text-blue-600" class="hover:text-gray-900">Profile</a>
@@ -8,4 +11,26 @@
     <a routerLink="/contact" routerLinkActive="text-blue-600" class="hover:text-gray-900">Contact</a>
     <a routerLink="/create-tour" routerLinkActive="text-blue-600" class="hover:text-gray-900">Create Tour</a>
   </div>
+
+  <!-- Mobile Menu Button -->
+   <button class="md:hidden text-gray-600" (click)="toggleMenu()">
+      @if (menuOpen()) {
+        <span class="text-xl">✕</span>
+      } @else {
+        <span class="text-xl">☰</span>
+      }
+    </button>
+  </div>
+
+<!-- Mobile Menu -->
+  @if (menuOpen()) {
+    <div class="md:hidden flex flex-col gap-4 mt-4 text-sm text-gray-600">
+      <a routerLink="/home" routerLinkActive="text-blue-600" (click)="toggleMenu()">Home</a>
+      <a routerLink="/tourlogs" routerLinkActive="text-blue-600" (click)="toggleMenu()">Plans</a>
+      <a routerLink="/login" routerLinkActive="text-blue-600" (click)="toggleMenu()">Profile</a>
+      <a routerLink="/about" routerLinkActive="text-blue-600" (click)="toggleMenu()">About Us</a>
+      <a routerLink="/contact" routerLinkActive="text-blue-600" (click)="toggleMenu()">Contact</a>
+      <a routerLink="/create-tour" routerLinkActive="text-blue-600" (click)="toggleMenu()">Create Tour</a>
+    </div>
+  }
 </nav>

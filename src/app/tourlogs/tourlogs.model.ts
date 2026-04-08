@@ -9,4 +9,5 @@ export interface Tour {
     distance: number;
     duration: number;
     description: string;
+    image?: string;
 }

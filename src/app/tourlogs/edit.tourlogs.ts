@@ -22,7 +22,8 @@ export class EditTourlogs {
             transportation: 'Train',
             distance: 300,
             duration: 4,
-            description: 'A scenic train ride from New York to Boston.'
+            description: 'A scenic train ride from New York to Boston.',
+            image: 'https://picsum.photos/seed/tour1/400/200'
         },
         {
             id: 2,
@@ -32,7 +33,8 @@ export class EditTourlogs {
             transportation: 'Car',
             distance: 15,
             duration: 0.5,
-            description: 'A quick drive to the beach for a relaxing day.'
+            description: 'A quick drive to the beach for a relaxing day.',
+            image: 'https://picsum.photos/seed/tour2/400/200'
         }
     ]);
 

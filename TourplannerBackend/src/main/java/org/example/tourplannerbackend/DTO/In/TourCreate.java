@@ -8,19 +8,19 @@ import lombok.Data;
 @Data
 public class TourCreate {
   @NotBlank
-  private String TourName;
+  private String tourName;
   @NotBlank
-  private String From;
+  private String from;
   @NotBlank
-  private String To;
+  private String to;
   @NotBlank
-  private String TransportationType;
+  private String transportationType;
   @NotNull
   @Min(0)
-  private int Distance;
+  private int distance;
   @NotNull
   @Min(0)
-  private int Duration;
+  private int duration;
   @NotBlank
-  private String Description;
+  private String description;
 }

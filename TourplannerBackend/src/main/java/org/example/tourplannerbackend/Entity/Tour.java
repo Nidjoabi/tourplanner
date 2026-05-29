@@ -15,15 +15,15 @@ public class Tour {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private UUID TourId;
+  private UUID Id;
 
-  private String TourName;
+  private String tourName;
   @Column(name = "to_location")
-  private String To;
+  private String to;
   @Column(name = "from_location")
-  private String From;
-  private String TransportationType;
-  private int Distance;
-  private int Duration;
-  private String Description;
+  private String from;
+  private String transportationType;
+  private int distance;
+  private int duration;
+  private String description;
 }

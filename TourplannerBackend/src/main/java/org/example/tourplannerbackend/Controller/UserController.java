@@ -12,14 +12,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 @AllArgsConstructor
 
 public class UserController {
 
   private final UserService userService;
 
-  @PostMapping("/register")
+  @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public void RegisterUser(@RequestBody @Valid UserRegister userIn){
     userService.RegisterUser(userIn);

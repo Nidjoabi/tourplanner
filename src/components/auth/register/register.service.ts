@@ -7,6 +7,6 @@ export class RegisterService {
     constructor(private apiService: ApiService) {}
 
     register(userData: any): Observable<any> {
-        return this.apiService.post('user/register', userData);
+        return this.apiService.post('users', userData);
     }
 }

@@ -73,15 +73,18 @@
       🗺️ <strong>Route:</strong> {{ summary() }}
     </div>
   }
-
+  @if(isLoadingRoute) {
+    <p style="font-size: 13px; color: #667; margin-bottom: 8px;">⌛ Calculating route...</p>
+  }
   <div class="route-row">
     <div class="field-row">
       <h4>Duration</h4>
       <input
         id="duration"
-        type="number"
+        type="text"
         class="input-field"
-        formControlName="duration"
+        [value]="displayDuration()"
+        readonly
       >
       @if (tourForm.controls.duration.touched && tourForm.controls.duration.invalid) {
         <small class="error-text">Duration is required.</small>
@@ -92,9 +95,10 @@
       <h4>Distance</h4>
       <input
         id="distance"
-        type="number"
+        type="text"
         class="input-field"
-        formControlName="distance"
+        [value]="displayDistance()"
+        readonly
       >
       @if (tourForm.controls.distance.touched && tourForm.controls.distance.invalid) {
         <small class="error-text">Distance is required.</small>

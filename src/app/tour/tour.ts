@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TourService } from './tour.service';
 import { TransporationType, Tour } from './tour.model';
 import { FormBuilder, Validators, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { MapFacadeService } from '../../services/map.service';
 
 @Component({
   selector: 'app-tour',
@@ -13,17 +14,21 @@ import { FormBuilder, Validators, FormControl, FormGroup, ReactiveFormsModule } 
 export class CreateTourComponent {
   private fb = inject(FormBuilder);
   private tourService = inject(TourService);
+  private mapService = inject(MapFacadeService);
+  private routeTimer: any = null;
 
   readonly TransportOptions: { type: TransporationType, icon: string, label: string }[] = [
     { type: 'Car', icon: '🚗', label: 'Car' },
     { type: 'Bus', icon: '🚌', label: 'Bus' },
-    { type: 'Train', icon: '🚆', label: 'Train' },
     { type: 'Bicycle', icon: '🚲', label: 'Bicycle' }
   ];
 
   isSaving = false;
   errorMessage: string = "";
   successMessage: string = "";
+  isLoadingRoute = false;
+  readonly displayDuration = signal('');
+  readonly displayDistance = signal('');
 
   // Task 1
   tourForm = new FormGroup({
@@ -49,9 +54,41 @@ export class CreateTourComponent {
     const { from, to, transportation } = this.tourForm.getRawValue();
     if (from && to) {
       this.summary.set(`${transportation} from ${from} to ${to}`);
+
+      if(this.routeTimer) clearTimeout(this.routeTimer);
+      this.routeTimer = setTimeout(() => {
+        this.calculateRoute(from, to);
+      }, 1000);
     } else {
       this.summary.set('');
     }
+  }
+  async calculateRoute(from: string, to: string): Promise<void> {
+    if (!from || !to) return;
+    this.isLoadingRoute = true;
+    try {
+      const transportation = this.tourForm.controls.transportation.value;
+      const { distance, duration } = await this.mapService.showRoute(from, to, transportation);
+      //Distance und duration auto eintragen
+      this.tourForm.patchValue({ distance, duration });
+      this.displayDuration.set(this.formatDuration(duration));
+      this.displayDistance.set(this.formatDistance(distance));
+    } catch (e) {
+      console.error('Error on Route Calculation:', e);
+    } finally {
+      this.isLoadingRoute = false;
+    }
+  }
+  formatDuration(minutes: number): string {
+    if (minutes <= 60) {
+      return `${minutes} min`;
+    }
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return `${hours} h ${mins} min`;
+  }
+  formatDistance(km: number): string {
+    return `${km.toFixed(1)} km`;
   }
 
   // Task 1
@@ -59,8 +96,11 @@ export class CreateTourComponent {
     this.tourForm.patchValue({ transportation: type });
     // Task 3
     this.updateSummary();
+    const {from, to} = this.tourForm.getRawValue();
+    if (from && to) {
+      this.calculateRoute(from, to);
+    }
   }
-
 
   get selectedTransportationType(): TransporationType {
     return this.tourForm.controls.transportation.value;

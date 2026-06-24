@@ -8,6 +8,7 @@ import lombok.Setter;
 
 
 @Entity
+@Table(name = "tours")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,4 +27,11 @@ public class Tour {
   private int distance;
   private int duration;
   private String description;
+
+  private String fromCoordinates;
+  private String toCoordinates;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id", nullable = false)
+  private User user;
 }

@@ -2,6 +2,7 @@ package org.example.tourplannerbackend.security;
 
 import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
+import org.example.tourplannerbackend.Service.client.OpenRouteServiceClient;
 import org.springframework.boot.http.converter.autoconfigure.HttpMessageConvertersProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

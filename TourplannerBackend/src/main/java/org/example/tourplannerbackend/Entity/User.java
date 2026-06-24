@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -36,6 +37,13 @@ public class User implements UserDetails {
   @Column(nullable = false)
   private String role;
 
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,  orphanRemoval = true)
+  private List<Tour> tours = new ArrayList<>();
+
+  public void addTour(Tour tour) {
+    this.tours.add(tour);
+    tour.setUser(this);
+  }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

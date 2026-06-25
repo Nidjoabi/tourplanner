@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class TourPublic {
-  private String tourId;
+  private String id;
   private String tourName;
   private String from;
   private String to;

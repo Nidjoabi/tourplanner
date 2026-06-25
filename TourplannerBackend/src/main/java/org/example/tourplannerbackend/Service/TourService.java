@@ -9,10 +9,13 @@ import org.example.tourplannerbackend.Entity.Tour;
 import org.example.tourplannerbackend.Entity.User;
 import org.example.tourplannerbackend.Mapper.Tourmapper;
 import org.example.tourplannerbackend.persistence.TourRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.UUID;
 
 
@@ -24,10 +27,8 @@ public class TourService {
   private final Tourmapper tourmapper;
   private final GeoService geoService;
 
-  public Tour create(TourCreate tourIn) {
+  public Tour create(TourCreate tourIn, User currentUser) {
     Tour tour = tourmapper.toEntity(tourIn);
-
-    User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     tour.setUser(currentUser);
 
     Coordinates fromCoordinates = geoService.findCoordinates(tour.getFrom())
@@ -42,31 +43,22 @@ public class TourService {
     return tourRepository.save(tour);
   }
 
-  public void deleteTour(UUID tourId) {
-    belongsToCurrentUser(tourId);
-
+  public void deleteTour(UUID tourId, User currentUser) {
+    Tour tour = tourRepository.findById(tourId)
+      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tour not found"));
+    if(!tour.getUser().getId().equals(currentUser.getId())) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to delete this tour");
+    }
     tourRepository.deleteById(tourId);
   }
 
-  private void belongsToCurrentUser(UUID tourId) {
-    User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    assert currentUser != null;
-    UUID currentUserId = currentUser.getId();
+  public Tour updateTour(UpdatedTour updatedTour, UUID tourId,  User currentUser) {
 
     Tour tour = tourRepository.findById(tourId)
-      .orElseThrow(IllegalArgumentException::new);
-
-    if(!tour.getUser().getId().equals(currentUserId)){
-      throw new AccessDeniedException("This tour does not belong to you!");
+      .orElseThrow(()  -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tour not found"));
+    if(!tour.getUser().getId().equals(currentUser.getId())) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to update this tour");
     }
-  }
-
-  public Tour updateTour(UpdatedTour updatedTour, UUID id) {
-
-    belongsToCurrentUser(id);
-
-    Tour tour = tourRepository.findById(id)
-      .orElseThrow(IllegalArgumentException::new);
 
     tour.setTourName(updatedTour.getTourName());
     tour.setTransportationType(updatedTour.getTransportationType());

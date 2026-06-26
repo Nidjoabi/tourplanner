@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -44,4 +45,17 @@ public class TourlogController {
     return tourlogMapper.toObject(tourlog);
 
   }
+
+  @GetMapping
+  public List<TourlogPublic> readAllTourlogs() {
+    return tourlogService.readAllTourlogs().stream().map(tourlogMapper::toListObject).toList();
+  }
+
+  @GetMapping("/{id}")
+  public  TourlogPublic readTourlog(@PathVariable UUID id) {
+    Tourlog tourlog = tourlogService.readById(id);
+    return tourlogMapper.toObject(tourlog);
+  }
+
+
 }

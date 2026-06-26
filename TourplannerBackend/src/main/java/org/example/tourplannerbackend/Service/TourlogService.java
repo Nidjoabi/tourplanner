@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.tourplannerbackend.DTO.In.CreateTourlog;
 import org.example.tourplannerbackend.DTO.In.TourCreate;
 import org.example.tourplannerbackend.DTO.In.UpdatedTourlog;
+import org.example.tourplannerbackend.DTO.Out.TourlogPublic;
 import org.example.tourplannerbackend.Entity.Tour;
 import org.example.tourplannerbackend.Entity.Tourlog;
 import org.example.tourplannerbackend.Entity.User;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -68,5 +70,14 @@ public class TourlogService {
     return tourlogRepository.save(tourlog);
   }
 
+  public List<Tourlog> readAllTourlogs() {
+    return tourlogRepository.findAll();
+  }
+
+  public Tourlog readById(UUID tourlogId) {
+
+    return tourlogRepository.findById(tourlogId)
+      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tourlog not found"));
+  }
 
 }

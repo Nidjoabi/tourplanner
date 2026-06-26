@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -80,6 +81,15 @@ public class TourService {
 
 
     return tourRepository.save(tour);
+  }
+
+  public List<Tour> readAllTours() {
+    return tourRepository.findAll();
+  }
+
+  public Tour readTourById(UUID tourId) {
+    return tourRepository.findById(tourId)
+      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tour not found"));
   }
 
 }

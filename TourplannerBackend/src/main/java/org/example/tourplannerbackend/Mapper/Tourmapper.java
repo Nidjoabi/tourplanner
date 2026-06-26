@@ -11,4 +11,5 @@ import org.mapstruct.MappingConstants;
 public interface Tourmapper {
   Tour toEntity (TourCreate tourIn);
   TourPublic toObject(Tour tour);
+  TourPublic toListObject(Tour tour);
 }

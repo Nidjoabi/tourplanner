@@ -15,6 +15,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -43,6 +44,17 @@ public class TourController {
   @ResponseStatus(HttpStatus.OK)
   public TourPublic updateTour(@RequestBody @Valid UpdatedTour updatedTour, @PathVariable UUID id, @AuthenticationPrincipal User currentUser) {
     Tour tour = tourService.updateTour(updatedTour, id, currentUser);
+    return tourmapper.toObject(tour);
+  }
+
+  @GetMapping
+  public List<TourPublic> readAllTours() {
+    return tourService.readAllTours().stream().map(tourmapper::toListObject).toList();
+  }
+
+  @GetMapping("/{id}")
+  public TourPublic readTour(@PathVariable UUID id) {
+    Tour tour = tourService.readTourById(id);
     return tourmapper.toObject(tour);
   }
 }

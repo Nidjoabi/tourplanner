@@ -1,21 +1,26 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Tour } from './tour.model';
+import { ApiService} from '../../services/api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TourService {
-  private tours: Tour[] = [];
+  constructor(private apiService: ApiService) {}
 
-  createTour(tour: Tour): Observable<Tour> {
-    const newTour: Tour = {
-      ...tour,
-      id: crypto.randomUUID()
-    };
-
-    this.tours.push(newTour);
-    return of(newTour);
+  getTours(): Observable<Tour[]> {
+    return this.apiService.get<Tour[]>('tours');
   }
 
+  createTour(tour: Tour): Observable<Tour> {
+    return this.apiService.post<Tour>('tours', tour);
+  }
+
+  updateTour(id: string, tour: Tour): Observable<Tour> {
+    return this.apiService.put<Tour>(`tours/${id}`, tour);
+  }
+  deleteTour(id: string): Observable<void> {
+    return this.apiService.delete<void>(`tours/${id}`);
+  }
 }

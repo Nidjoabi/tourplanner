@@ -17,7 +17,7 @@ export class LoginComponent {
 
   constructor(private fb: FormBuilder, private loginService: LoginService, private router: Router) {
     this.form = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
+      username: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(8)]],
     });
   }
@@ -30,8 +30,9 @@ export class LoginComponent {
       this.isLoading = true;
 
       this.loginService.login(this.form.value as LoginRequest).subscribe({
-        next: () => {
+        next: (token) => {
         this.isLoading = false;
+        sessionStorage.setItem('token', token);
         this.router.navigate(['/']);
       },
       error: (err) => {

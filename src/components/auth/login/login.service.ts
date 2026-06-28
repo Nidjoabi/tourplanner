@@ -6,7 +6,10 @@ import { ApiService } from "../../../services/api.service";
 export class LoginService {
     constructor(private apiService: ApiService) {}
 
-    login(userData: any): Observable<any> {
-        return this.apiService.post('/auth', userData);
-    }
+    login(userData: any): Observable<string> {
+        return this.apiService.postToken('auth', {
+          username: userData.username,
+          password: userData.password
+    });
+  }
 }

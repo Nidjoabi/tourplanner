@@ -25,7 +25,7 @@ export class ApiService {
         return this.http.post<T>(`${this.baseUrl}/${endpoint}`, body, { headers: this.getHeaders() });
     }
 
-    postText(endpoint: string, body: unknown): Observable<string> {
+    postToken(endpoint: string, body: unknown): Observable<string> {
       return this.http.post(`${this.baseUrl}/${endpoint}`, body, {
         headers: this.getHeaders(),
         responseType: 'text'

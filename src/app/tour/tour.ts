@@ -32,10 +32,10 @@ export class CreateTourComponent {
 
   // Task 1
   tourForm = new FormGroup({
-    tripName: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    tourName: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     from: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     to: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    transportation: new FormControl<TransporationType>('Car', {
+    transportationType: new FormControl<TransporationType>('Car', {
       nonNullable: true,
       validators: [Validators.required]
     }),
@@ -51,9 +51,9 @@ export class CreateTourComponent {
   readonly summary = signal('');
 
   updateSummary(): void {
-    const { from, to, transportation } = this.tourForm.getRawValue();
+    const { from, to, transportationType } = this.tourForm.getRawValue();
     if (from && to) {
-      this.summary.set(`${transportation} from ${from} to ${to}`);
+      this.summary.set(`${transportationType} from ${from} to ${to}`);
 
       if(this.routeTimer) clearTimeout(this.routeTimer);
       this.routeTimer = setTimeout(() => {
@@ -67,8 +67,8 @@ export class CreateTourComponent {
     if (!from || !to) return;
     this.isLoadingRoute = true;
     try {
-      const transportation = this.tourForm.controls.transportation.value;
-      const { distance, duration } = await this.mapService.showRoute(from, to, transportation);
+      const transportationType = this.tourForm.controls.transportationType.value;
+      const { distance, duration } = await this.mapService.showRoute(from, to, transportationType);
       //Distance und duration auto eintragen
       this.tourForm.patchValue({ distance, duration });
       this.displayDuration.set(this.formatDuration(duration));
@@ -93,7 +93,7 @@ export class CreateTourComponent {
 
   // Task 1
   selectTransportation(type: TransporationType): void{
-    this.tourForm.patchValue({ transportation: type });
+    this.tourForm.patchValue({ transportationType: type });
     // Task 3
     this.updateSummary();
     const {from, to} = this.tourForm.getRawValue();
@@ -103,15 +103,15 @@ export class CreateTourComponent {
   }
 
   get selectedTransportationType(): TransporationType {
-    return this.tourForm.controls.transportation.value;
+    return this.tourForm.controls.transportationType.value;
   }
 
   clearForm(): void {
     this.tourForm.reset({
-      tripName: '',
+      tourName: '',
       from: '',
       to: '',
-      transportation: 'Car',
+      transportationType: 'Car',
       duration: 0,
       distance: 0,
       description: ''
@@ -135,13 +135,17 @@ export class CreateTourComponent {
     this.tourService.createTour(tour).subscribe({
       next: (createdTour) => {
         this.isSaving = false;
-        this.successMessage = `Tour "${createdTour.tripName}" created successfully!`;
+        this.successMessage = `Tour "${createdTour.tourName}" created successfully!`;
         console.log('Created Tour:', createdTour);
         this.clearForm();
       },
-      error: () => {
+      error: (err) => {
         this.isSaving = false;
-        this.errorMessage = "An error occurred while creating the tour. Please try again.";
+        if (err.status === 401 || err.status === 403) {
+          this.errorMessage = "Please log in or register to create a tour.";
+        } else {
+          this.errorMessage = "An error occurred while creating the tour. Please try again.";
+        }
       }
     });
   }

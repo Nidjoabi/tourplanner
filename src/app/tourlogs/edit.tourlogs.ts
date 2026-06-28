@@ -16,10 +16,10 @@ export class EditTourlogs {
     dummyTours= signal<Tour[]>([
         {
             id: 1,
-            tripName: 'City Tour',
+            tourName: 'City Tour',
             from: 'New York',
             to: 'Boston',
-            transportation: 'Train',
+            transportationType: 'Train',
             distance: 300,
             duration: 4,
             description: 'A scenic train ride from New York to Boston.',
@@ -27,10 +27,10 @@ export class EditTourlogs {
         },
         {
             id: 2,
-            tripName: 'Beach Getaway',
+            tourName: 'Beach Getaway',
             from: 'Los Angeles',
             to: 'Santa Monica',
-            transportation: 'Car',
+            transportationType: 'Car',
             distance: 15,
             duration: 0.5,
             description: 'A quick drive to the beach for a relaxing day.',
@@ -39,10 +39,10 @@ export class EditTourlogs {
     ]);
 
     tourForm = new FormGroup({
-    tripName: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    tourName: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     from: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     to: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    transportation: new FormControl<TransporationType>('Car', {
+    transportationType: new FormControl<TransporationType>('Car', {
       nonNullable: true,
       validators: [Validators.required]
     }),
@@ -54,7 +54,7 @@ export class EditTourlogs {
     })
   });
 
-   
+
     SelectedTourLogId = signal<number | null>(null);
 
     SelectedTourLog = computed<Tour | null>(() =>
@@ -104,7 +104,7 @@ export class EditTourlogs {
             )
           );
 
-          this.successMessage = `Tour "${fixedTour.tripName}" updated successfully!`;
+          this.successMessage = `Tour "${fixedTour.tourName}" updated successfully!`;
           console.log('Updated Tour:', fixedTour);
           this.cancelEdit();
         },
@@ -123,10 +123,10 @@ export class EditTourlogs {
       if (!tour) return;
 
       this.tourForm.patchValue({
-        tripName: tour.tripName,
+        tourName: tour.tourName,
         from: tour.from,
         to: tour.to,
-        transportation: tour.transportation,
+        transportationType: tour.transportationType,
         duration: tour.duration,
         distance: tour.distance,
         description: tour.description

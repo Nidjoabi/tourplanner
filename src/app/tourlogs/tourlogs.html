@@ -11,25 +11,25 @@
           @if (tourLog.image) {
             <img
             [src]="tourLog.image"
-            [alt]="tourLog.tripName"
+            [alt]="tourLog.tourName"
             style="width: 100%; height: 160px; object-fit: cover; border-radius: 6px 6px 0 0; margin-bottom: 12px;"
             />
           }
           <div class="tour-header">
             <div>
-              <h2 class="tour-title">{{ tourLog.tripName }}</h2>
+              <h2 class="tour-title">{{ tourLog.tourName }}</h2>
               <p class="tour-route">{{ tourLog.from }} → {{ tourLog.to }}</p>
             </div>
 
             <span class="tour-badge">
-              {{ tourLog.transportation }}
+              {{ tourLog.transportationType }}
             </span>
           </div>
 
           <div class="tour-details">
             <p><strong>From:</strong> {{ tourLog.from }}</p>
             <p><strong>To:</strong> {{ tourLog.to }}</p>
-            <p><strong>Transportation:</strong> {{ tourLog.transportation }}</p>
+            <p><strong>Transportation:</strong> {{ tourLog.transportationType }}</p>
             <p><strong>Distance:</strong> {{ tourLog.distance }} miles</p>
             <p><strong>Duration:</strong> {{ tourLog.duration }} hours</p>
             <p><strong>Description:</strong> {{ tourLog.description }}</p>
@@ -58,8 +58,8 @@
       <form class="edit-panel" [formGroup]="vm.tourForm" (ngSubmit)="vm.EditTourLog()">
         <h2>Edit Tour</h2>
 
-        <label for="tripName">Trip Name</label>
-        <input id="tripName" type="text" formControlName="tripName" />
+        <label for="tourName">Trip Name</label>
+        <input id="tourName" type="text" formControlName="tourName" />
 
         <label for="from">From</label>
         <input id="from" type="text" formControlName="from" />
@@ -67,8 +67,8 @@
         <label for="to">To</label>
         <input id="to" type="text" formControlName="to" />
 
-        <label for="transportation">Transportation</label>
-        <input id="transportation" type="text" formControlName="transportation" />
+        <label for="transportationType">Transportation</label>
+        <input id="transportationType" type="text" formControlName="transportationType" />
 
         <label for="distance">Distance</label>
         <input id="distance" type="number" formControlName="distance" />

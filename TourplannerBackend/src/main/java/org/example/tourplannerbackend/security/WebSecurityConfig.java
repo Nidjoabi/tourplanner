@@ -60,7 +60,7 @@ public class WebSecurityConfig {
     config.setAllowedHeaders(List.of("*"));
 
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/*", config);
+    source.registerCorsConfiguration("/**", config);
     return source;
   }
 

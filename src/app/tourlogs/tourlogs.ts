@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import {Tour} from "./tourlogs.model";
 import { EditTourlogs } from './edit.tourlogs';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -10,7 +9,5 @@ import { ReactiveFormsModule } from '@angular/forms';
   styleUrl: './tourlogs.css',
 })
 export class Tourlogs {
-
   vm = new EditTourlogs();
-
 }

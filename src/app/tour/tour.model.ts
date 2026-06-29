@@ -1,4 +1,4 @@
-export type TransporationType = 'Car' | 'Train' | 'Bus' | 'Plane' | 'Bicycle';
+export type TransporationType = 'Car' | 'Bus' | 'Bicycle';
 
 export interface Tour {
     id?: string;
@@ -9,4 +9,5 @@ export interface Tour {
     distance: number;
     duration: number;
     description: string;
+    image?: string;
 }

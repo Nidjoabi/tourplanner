@@ -1,42 +1,18 @@
-import { Component, inject, signal } from '@angular/core';
-import {Tour, TransporationType} from "./tourlogs.model";
+import { inject, signal } from '@angular/core';
+import {Tour, TransporationType} from "../tour/tour.model";
 import { computed } from '@angular/core';
-import { TourlogsService } from './tourlogs.service';
-import { FormBuilder, Validators, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-
+import { Validators, FormControl, FormGroup } from '@angular/forms';
+import { TourService } from '../tour/tour.service';
 
 export class EditTourlogs {
 
-    private tourlogsService = inject(TourlogsService);
+    private tourService = inject(TourService);
 
     isSaving = false;
     errorMessage: string = "";
     successMessage: string = "";
 
-    dummyTours= signal<Tour[]>([
-        {
-            id: 1,
-            tourName: 'City Tour',
-            from: 'New York',
-            to: 'Boston',
-            transportationType: 'Train',
-            distance: 300,
-            duration: 4,
-            description: 'A scenic train ride from New York to Boston.',
-            image: 'https://picsum.photos/seed/tour1/400/200'
-        },
-        {
-            id: 2,
-            tourName: 'Beach Getaway',
-            from: 'Los Angeles',
-            to: 'Santa Monica',
-            transportationType: 'Car',
-            distance: 15,
-            duration: 0.5,
-            description: 'A quick drive to the beach for a relaxing day.',
-            image: 'https://picsum.photos/seed/tour2/400/200'
-        }
-    ]);
+    tours= signal<Tour[]>([]);
 
     tourForm = new FormGroup({
     tourName: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
@@ -54,23 +30,34 @@ export class EditTourlogs {
     })
   });
 
+    SelectedTourId = signal<string | null>(null);
 
-    SelectedTourLogId = signal<number | null>(null);
-
-    SelectedTourLog = computed<Tour | null>(() =>
-        this.dummyTours().find(tour => tour.id === this.SelectedTourLogId()) ?? null
+    SelectedTour = computed<Tour | null>(() =>
+        this.tours().find(tour => tour.id === this.SelectedTourId()) ?? null
     );
 
-    tourLogs(): Tour[] {
-        return this.dummyTours();
+    constructor() {
+      this.loadTours();
     }
 
-    DeleteTourLog(id: number): void {
-        this.dummyTours.set(this.dummyTours().filter(tour => tour.id !== id));
-        console.log(`Deleted tour log with id: ${id}`);
+    loadTours(): void {
+      this.tourService.getTours().subscribe({
+        next: (tours) => this.tours.set(tours),
+        error: () => this.errorMessage = "Could not load Tours"
+      });
     }
 
-    EditTourLog(): void {
+    DeleteTour(id: string): void {
+      this.tourService.deleteTour(id).subscribe({
+        next: () => {
+          this.tours.set(this.tours().filter(tour => tour.id !== id));
+          this.successMessage = "Tour deleted successfully.";
+          },
+        error: () => this.errorMessage = "Could not delete Tour"
+      });
+    }
+
+    EditTour(): void {
       this.successMessage = "";
       this.errorMessage = "";
 
@@ -79,7 +66,7 @@ export class EditTourlogs {
         return;
       }
 
-      const selectedId = this.SelectedTourLogId();
+      const selectedId = this.SelectedTourId();
       if (selectedId === null) return;
 
       this.isSaving = true;
@@ -89,23 +76,12 @@ export class EditTourlogs {
         ...this.tourForm.getRawValue()
       };
 
-      this.tourlogsService.editTourLog(tour).subscribe({
+      this.tourService.updateTour(selectedId, tour).subscribe({
         next: (updatedTour) => {
           this.isSaving = false;
-
-          const fixedTour: Tour = {
-            ...updatedTour,
-            id: selectedId
-          };
-
-          this.dummyTours.update(tours =>
-            tours.map(t =>
-              t.id === selectedId ? fixedTour : t
-            )
+          this.tours.update(tours => tours.map(t => t.id === selectedId ? updatedTour : t)
           );
-
-          this.successMessage = `Tour "${fixedTour.tourName}" updated successfully!`;
-          console.log('Updated Tour:', fixedTour);
+          this.successMessage = `Tour "${updatedTour.tourName}" updated successfully!`;
           this.cancelEdit();
         },
         error: () => {
@@ -116,10 +92,10 @@ export class EditTourlogs {
     }
 
 
-    selectTourLog(id: number): void {
-      this.SelectedTourLogId.set(id);
+    selectTour(id: string): void {
+      this.SelectedTourId.set(id);
 
-      const tour = this.dummyTours().find(tour => tour.id === id);
+      const tour = this.tours().find(tour => tour.id === id);
       if (!tour) return;
 
       this.tourForm.patchValue({
@@ -134,12 +110,6 @@ export class EditTourlogs {
     }
 
     cancelEdit(): void {
-        this.SelectedTourLogId.set(null);
+      this.SelectedTourId.set(null);
     }
-
-
-
-
-
-
 }

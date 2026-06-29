@@ -1,7 +1,7 @@
-export type TransporationType = 'Car' | 'Train' | 'Bus' | 'Plane' | 'Bicycle';
+export type TransporationType = 'Car' | 'Bus' | 'Bicycle';
 
 export interface Tour {
-    id?: number;
+    id?: string;
     tourName: string;
     from: string;
     to: string;

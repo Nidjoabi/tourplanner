@@ -2,60 +2,74 @@
   <div class="page-container">
     <h1 class="page-title">Tour Logs</h1>
 
+    @if (vm.successMessage) {
+      <p style="color: green; margin-bottom: 12px;">{{ vm.successMessage }}</p>
+    }
+    @if (vm.errorMessage) {
+      <p style="color: red; margin-bottom: 12px;">{{ vm.errorMessage }}</p>
+    }
     <div class="tour-grid">
-      @for (tourLog of vm.tourLogs(); track tourLog.id) {
+      @for (tour of vm.tours(); track tour.id) {
         <div
           class="tour-card"
-          [class.selected]="vm.SelectedTourLogId() === tourLog.id"
+          [class.selected]="vm.SelectedTourId() === tour.id"
         >
-          @if (tourLog.image) {
+          @if (tour.image) {
             <img
-            [src]="tourLog.image"
-            [alt]="tourLog.tourName"
+            [src]="tour.image"
+            [alt]="tour.tourName"
             style="width: 100%; height: 160px; object-fit: cover; border-radius: 6px 6px 0 0; margin-bottom: 12px;"
             />
           }
           <div class="tour-header">
             <div>
-              <h2 class="tour-title">{{ tourLog.tourName }}</h2>
-              <p class="tour-route">{{ tourLog.from }} → {{ tourLog.to }}</p>
+              <h2 class="tour-title">{{ tour.tourName }}</h2>
+              <p class="tour-route">{{ tour.from }} → {{ tour.to }}</p>
             </div>
 
             <span class="tour-badge">
-              {{ tourLog.transportationType }}
+              {{ tour.transportationType }}
             </span>
           </div>
 
           <div class="tour-details">
-            <p><strong>From:</strong> {{ tourLog.from }}</p>
-            <p><strong>To:</strong> {{ tourLog.to }}</p>
-            <p><strong>Transportation:</strong> {{ tourLog.transportationType }}</p>
-            <p><strong>Distance:</strong> {{ tourLog.distance }} miles</p>
-            <p><strong>Duration:</strong> {{ tourLog.duration }} hours</p>
-            <p><strong>Description:</strong> {{ tourLog.description }}</p>
+            <p><strong>From:</strong> {{ tour.from }}</p>
+            <p><strong>To:</strong> {{ tour.to }}</p>
+            <p><strong>Transportation:</strong> {{ tour.transportationType }}</p>
+            <p><strong>Distance:</strong> {{ tour.distance }} miles</p>
+            <p><strong>Duration:</strong> {{ tour.duration }} hours</p>
+            <p><strong>Description:</strong> {{ tour.description }}</p>
           </div>
 
           <div class="tour-actions">
             <button
               class="delete-button"
-              (click)="vm.DeleteTourLog(tourLog.id!)"
+              (click)="vm.DeleteTour(tour.id!)"
             >
               Delete
             </button>
 
             <button
               class="edit-button"
-              (click)="vm.selectTourLog(tourLog.id!)"
+              (click)="vm.selectTour(tour.id!)"
             >
               Edit
+            </button>
+          </div>
+          <div class="tour-actions" style="margin-top: 8px;">
+            <button type="button" class="edit-button">
+              Add Tour Log
+            </button>
+            <button type="button" class="edit-button">
+              Show Tour Logs
             </button>
           </div>
         </div>
       }
     </div>
 
-    @if (vm.SelectedTourLog()) {
-      <form class="edit-panel" [formGroup]="vm.tourForm" (ngSubmit)="vm.EditTourLog()">
+    @if (vm.SelectedTour()) {
+      <form class="edit-panel" [formGroup]="vm.tourForm" (ngSubmit)="vm.EditTour()">
         <h2>Edit Tour</h2>
 
         <label for="tourName">Trip Name</label>
@@ -80,14 +94,8 @@
         <textarea id="description" formControlName="description"></textarea>
 
         <div class="edit-actions">
-          <button class="save-button" type="submit">Save</button>
-          <button
-            class="cancel-button"
-            type="button"
-            (click)="vm.cancelEdit()"
-          >
-            Cancel
-          </button>
+          <button class="save-button" type="submit" [disabled]="vm.isSaving">Save</button>
+          <button class="cancel-button" type="button" (click)="vm.cancelEdit()">Cancel</button>
         </div>
       </form>
     }

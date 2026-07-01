@@ -32,6 +32,7 @@ public class Tourlog {
   @Min(value = 1)
   @Max(value = 5)
   private int ratings;
+  private boolean childFriendly;
 
   @ManyToOne
   @JoinColumn(name = "tour_id", nullable = false)

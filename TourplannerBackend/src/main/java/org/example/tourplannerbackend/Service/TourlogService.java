@@ -28,11 +28,11 @@ public class TourlogService {
   private final TourlogRepository tourlogRepository;
   private final TourRepository tourRepository;
 
-  public Tourlog createTourlog(CreateTourlog tourIn, User currentUser) {
+  public Tourlog createTourlog(UUID tourId, CreateTourlog tourIn, User currentUser) {
     Tourlog tourlog = tourlogMapper.toEntity(tourIn);
 
-    Tour tour = tourRepository.findById(tourIn.getTourId())
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tour not found"));
+    Tour tour = tourRepository.findById(tourId)
+      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tour not found"));
 
     tourlog.setTour(tour);
     tourlog.setUser(currentUser);
@@ -41,9 +41,13 @@ public class TourlogService {
     return tourlogRepository.save(tourlog);
   }
 
-  public void deleteTourlog(UUID tourlogId, User currentUser) {
+  public void deleteTourlog(UUID tourId, UUID tourlogId, User currentUser) {
     Tourlog tourlog = tourlogRepository.findById(tourlogId)
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tourlog not found"));
+
+    if (!tourlog.getTour().getId().equals(tourId)) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Tourlog not found for this tour");
+    }
 
     if (!tourlog.getUser().getId().equals(currentUser.getId())) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to delete this tourlog");
@@ -52,9 +56,13 @@ public class TourlogService {
     tourlogRepository.deleteById(tourlogId);
   }
 
-  public Tourlog updateTourlog(UpdatedTourlog updatedTourlogIn, UUID tourlogId, User currentUser) {
+  public Tourlog updateTourlog(UUID tourId, UpdatedTourlog updatedTourlogIn, UUID tourlogId, User currentUser) {
     Tourlog tourlog = tourlogRepository.findById(tourlogId)
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tourlog not found"));
+
+    if (!tourlog.getTour().getId().equals(tourId)) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Tourlog not found for this tour");
+    }
 
     if (!tourlog.getUser().getId().equals(currentUser.getId())) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to update this tourlog");
@@ -70,14 +78,27 @@ public class TourlogService {
     return tourlogRepository.save(tourlog);
   }
 
-  public List<Tourlog> readAllTourlogs() {
-    return tourlogRepository.findAll();
+  public List<Tourlog> readAllTourlogs(UUID tourId) {
+    return tourlogRepository.findByTourId(tourId);
   }
 
-  public Tourlog readById(UUID tourlogId) {
+  public List<Tourlog> readMyTourlogs(User currentUser) {
+    return tourlogRepository.findByUserId(currentUser.getId());
+  }
 
-    return tourlogRepository.findById(tourlogId)
+  public Tourlog readById(UUID tourId, UUID tourlogId, User currentUser) {
+    Tourlog tourlog = tourlogRepository.findById(tourlogId)
       .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tourlog not found"));
+
+    if (!tourlog.getTour().getId().equals(tourId)) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Tourlog not found for this tour");
+    }
+
+    if (!tourlog.getUser().getId().equals(currentUser.getId())) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to view this tourlog");
+    }
+
+    return tourlog;
   }
 
 }

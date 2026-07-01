@@ -5,11 +5,12 @@
   <!-- Desktop -->
   <div class="hidden md:flex gap-6 text-sm text-gray-600">
     <a routerLink="/home" routerLinkActive="text-blue-600" class="hover:text-gray-900">Home</a>
-    <a routerLink="/tourlogs" routerLinkActive="text-blue-600" class="hover:text-gray-900">Plans</a>
+    <a routerLink="/tour-page" routerLinkActive="text-blue-600" class="hover:text-gray-900">Plans</a>
     <a routerLink="/login" routerLinkActive="text-blue-600" class="hover:text-gray-900">Profile</a>
     <a routerLink="/about" routerLinkActive="text-blue-600" class="hover:text-gray-900">About Us</a>
     <a routerLink="/contact" routerLinkActive="text-blue-600" class="hover:text-gray-900">Contact</a>
     <a routerLink="/create-tour" routerLinkActive="text-blue-600" class="hover:text-gray-900">Create Tour</a>
+    <a routerLink="/tourlogs" routerLinkActive="text-blue-600" class="hover:text-gray-900">Tour Logs</a>
   </div>
 
   <!-- Mobile Menu Button -->
@@ -26,10 +27,11 @@
   @if (menuOpen()) {
     <div class="md:hidden flex flex-col gap-4 mt-4 text-sm text-gray-600">
       <a routerLink="/home" routerLinkActive="text-blue-600" (click)="toggleMenu()">Home</a>
-      <a routerLink="/tourlogs" routerLinkActive="text-blue-600" (click)="toggleMenu()">Plans</a>
+      <a routerLink="/tour-page" routerLinkActive="text-blue-600" (click)="toggleMenu()">Plans</a>
       <a routerLink="/login" routerLinkActive="text-blue-600" (click)="toggleMenu()">Profile</a>
       <a routerLink="/about" routerLinkActive="text-blue-600" (click)="toggleMenu()">About Us</a>
       <a routerLink="/contact" routerLinkActive="text-blue-600" (click)="toggleMenu()">Contact</a>
+      <a routerLink="/tourlogs" routerLinkActive="text-blue-600" (click)="toggleMenu()">Tour Logs</a>
       <a routerLink="/create-tour" routerLinkActive="text-blue-600" (click)="toggleMenu()">Create Tour</a>
     </div>
   }

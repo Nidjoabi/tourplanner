@@ -1,0 +1,22 @@
+<div class="page-wrapper">
+  <div class="page-container">
+    <h1 class="page-title">My Tour Logs</h1>
+
+    @if (vm.errorMessage()) {
+      <p class="error-text">{{ vm.errorMessage() }}</p>
+    }
+
+    @if (vm.isLoading()) {
+      <p>Loading...</p>
+    } @else {
+      <div class="tour-grid">
+        @for (log of vm.tourlogs(); track log.id) {
+          <app-tourlog
+            [tourlogData]="log"
+            (deleted)="onDeleted($event)"
+          />
+        }
+      </div>
+    }
+  </div>
+</div>

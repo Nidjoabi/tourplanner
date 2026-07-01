@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
 import { from, Observable, of } from 'rxjs';
-import { Tour } from './tourlogs.model';
+import { Tour } from './tour.model';
 import { ApiService } from '../../services/api.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TourlogsService {
+export class TourPageService {
 
   constructor(private apiService: ApiService) { }
 
-  getTourLogs(): Observable<Tour[]> {
-    return this.apiService.get<Tour[]>('tourlogs');
+  getTours(): Observable<Tour[]> {
+    return this.apiService.get<Tour[]>('tours');
   }
 
-  editTourLog(tour: Tour): Observable<Tour> {
+  editTour(tour: Tour): Observable<Tour> {
     return of(tour);
   }
 }

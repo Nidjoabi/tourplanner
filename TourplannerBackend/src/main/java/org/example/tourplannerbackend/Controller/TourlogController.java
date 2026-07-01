@@ -17,45 +17,50 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/tourlogs")
 @AllArgsConstructor
 public class TourlogController {
   private final TourlogMapper tourlogMapper;
   private final TourlogService tourlogService;
 
-  @PostMapping
+  @PostMapping("/tours/{tourId}/tourlogs")
   @ResponseStatus(HttpStatus.CREATED)
-  public TourlogPublic createTourlog(@RequestBody @Valid CreateTourlog tourlogIn, @AuthenticationPrincipal User currentUser) {
+  public TourlogPublic createTourlog(@PathVariable UUID tourId, @RequestBody @Valid CreateTourlog tourlogIn, @AuthenticationPrincipal User currentUser) {
 
-    Tourlog tourlog = tourlogService.createTourlog(tourlogIn, currentUser);
+    Tourlog tourlog = tourlogService.createTourlog(tourId, tourlogIn, currentUser);
     return tourlogMapper.toObject(tourlog);
 
   }
 
-  @DeleteMapping("/{id}")
+  @DeleteMapping("/tours/{tourId}/tourlogs/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteTourlog(@PathVariable UUID id,  @AuthenticationPrincipal User currentUser) {
-    tourlogService.deleteTourlog(id, currentUser);
+  public void deleteTourlog(@PathVariable UUID tourId, @PathVariable UUID id, @AuthenticationPrincipal User currentUser) {
+    tourlogService.deleteTourlog(tourId, id, currentUser);
   }
 
-  @PutMapping("/{id}")
+  @PutMapping("/tours/{tourId}/tourlogs/{id}")
   @ResponseStatus(HttpStatus.OK)
-  public TourlogPublic updateTourlog(@RequestBody @Valid UpdatedTourlog updatedTourlogIn, @PathVariable UUID id, @AuthenticationPrincipal User currentUser){
-    Tourlog tourlog = tourlogService.updateTourlog(updatedTourlogIn, id, currentUser);
+  public TourlogPublic updateTourlog(@PathVariable UUID tourId, @RequestBody @Valid UpdatedTourlog updatedTourlogIn, @PathVariable UUID id, @AuthenticationPrincipal User currentUser){
+    Tourlog tourlog = tourlogService.updateTourlog(tourId, updatedTourlogIn, id, currentUser);
     return tourlogMapper.toObject(tourlog);
 
   }
 
-  @GetMapping
-  public List<TourlogPublic> readAllTourlogs() {
-    return tourlogService.readAllTourlogs().stream().map(tourlogMapper::toListObject).toList();
+  // Alle Logs für DIESE TOUR, von allen Usern
+  @GetMapping("/tours/{tourId}/tourlogs")
+  public List<TourlogPublic> readAllTourlogs(@PathVariable UUID tourId) {
+    return tourlogService.readAllTourlogs(tourId).stream().map(tourlogMapper::toListObject).toList();
   }
 
-  @GetMapping("/{id}")
-  public  TourlogPublic readTourlog(@PathVariable UUID id) {
-    Tourlog tourlog = tourlogService.readById(id);
+  @GetMapping("/tours/{tourId}/tourlogs/{id}")
+  public  TourlogPublic readTourlog(@PathVariable UUID tourId, @PathVariable UUID id, @AuthenticationPrincipal User currentUser) {
+    Tourlog tourlog = tourlogService.readById(tourId, id, currentUser);
     return tourlogMapper.toObject(tourlog);
   }
 
+  // Alle Logs DES EINGELOGGTEN USERS, über alle Touren hinweg
+  @GetMapping("/tourlogs")
+  public List<TourlogPublic> readMyTourlogs(@AuthenticationPrincipal User currentUser) {
+    return tourlogService.readMyTourlogs(currentUser).stream().map(tourlogMapper::toListObject).toList();
+  }
 
 }

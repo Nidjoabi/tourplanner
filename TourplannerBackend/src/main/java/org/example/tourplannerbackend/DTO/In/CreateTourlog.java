@@ -21,6 +21,7 @@ public class CreateTourlog {
   @Min(value = 1)
   @Max(value = 5)
   private int ratings;
-  @NotNull
-  private UUID tourId;
+
+  private boolean childFriendly;
+
 }

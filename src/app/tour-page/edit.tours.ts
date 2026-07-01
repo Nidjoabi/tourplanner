@@ -4,7 +4,7 @@ import { computed } from '@angular/core';
 import { Validators, FormControl, FormGroup } from '@angular/forms';
 import { TourService } from '../tour/tour.service';
 
-export class EditTourlogs {
+export class EditTours {
 
     private tourService = inject(TourService);
 

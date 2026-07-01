@@ -1,0 +1,30 @@
+@if (vm.tourlog(); as log) {
+  <div class="tourlog-card">
+    <div class="tourlog-header">
+      <div>
+        <h3 class="tourlog-title">{{ log.comment }}</h3>
+        <p class="tourlog-date">{{ log.createdAt | date:'dd.MM.yyyy' }}</p>
+      </div>
+
+      <span class="tourlog-badge" [ngClass]="vm.difficultyClass()">
+        {{ log.difficulty }}
+      </span>
+    </div>
+
+    <div class="tourlog-details">
+      <p><strong>Total Time:</strong> {{ log.totalTime }} h</p>
+      <p><strong>Total Distance:</strong> {{ log.totalDistance }} km</p>
+      <p><strong>Rating:</strong> {{ vm.ratingStars() }}</p>
+      <p><strong>Child Friendly:</strong> {{ log.childFriendly ? 'Yes' : 'No' }}</p>
+    </div>
+
+    <div class="tourlog-actions">
+      <button class="delete-button" type="button" (click)="onDelete()">
+        Delete
+      </button>
+      <button class="edit-button" type="button" (click)="onEdit()">
+        Edit
+      </button>
+    </div>
+  </div>
+}
